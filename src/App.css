@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer components {
+  body {
+    @apply m-0
+  }
+  .custom-handle{
+    @apply w-5 h-5 rounded-full border-black border-[1px]
+  }
+  .custom-handle div{
+    @apply w-full h-full flex justify-center items-center pointer-events-none
+  }
+  .animation-demo {
+    animation : animate 2s infinite alternate;
+  }
+}
+
+@keyframes animate {
+  0%{
+    transform: translateY(0);
+  }
+  100%{
+    transform : translateY(-200px);
+  }
+}
