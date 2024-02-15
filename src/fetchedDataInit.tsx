@@ -2,7 +2,7 @@ export interface keyable<T> {
   [key : string] : T
 }
 
-interface TypeDataValue {
+export interface TypeDataValue {
   value : string | null | boolean | undefined | number;
   type : string,
   label : string,

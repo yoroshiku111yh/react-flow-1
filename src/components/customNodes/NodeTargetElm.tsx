@@ -1,11 +1,11 @@
 import { Handle, NodeProps, Position } from "reactflow";
-import { TypeOptionData } from "../../types/data.type";
+import { TypeDataValue } from "../../fetchedDataInit";
 
 export default function NodeTargetElm(props: NodeProps) {
   const { data } = props;
   const listOption = [];
   for (const property in data.select) {
-    const item: TypeOptionData = data.select[property];
+    const item: TypeDataValue = data.select[property];
     const elm = (
       <div key={listOption.length} className="relative">
         <h4>

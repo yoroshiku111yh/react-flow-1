@@ -5,6 +5,8 @@ This is demo basic react flow with action :
 - create node when double click
 - update node element when source node on change value
 
+# Still a lot of things to do , but it's already to show what I learned and use React Flow. And it's usable #
+
 Code by typescript and useContext to state management, style by tailwindcss
 
 Requirement : 
