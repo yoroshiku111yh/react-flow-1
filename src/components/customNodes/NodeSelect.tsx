@@ -1,44 +1,13 @@
-import { useContext } from "react";
-import { Handle, NodeProps, Position, useReactFlow } from "reactflow";
-import { UseContext } from "../../App";
-import getDataUpdatedNode from "../../function/getDataUpdatedNode";
+import { Handle, NodeProps, Position } from "reactflow";
+import { NodeTypeHoC } from "../../types/node.type";
+import updateNodeHOC from "../../hocs/updateNodeHoc";
 
-export default function NodeSelect(props: NodeProps) {
-  const { dataOutput, updateDataOutput } = useContext(UseContext);
-  const { data, id } = props;
-  const { setNodes, getEdges, getNode } = useReactFlow();
-  const setNodeUpdate = (value: string) => {
-    setNodes((nds) =>
-      nds.map((nd) => {
-        if (nd.id === id) {
-          nd.data = {
-            ...nd.data,
-            value: value,
-          };
-        }
-        return nd;
-      })
-    );
-  };
-  const updateDataOutPut = () => {
-    const edges = getEdges();
-    const nodeSource = getNode(id);
-    if (nodeSource) {
-      const dataUpdated = getDataUpdatedNode({
-        id: id,
-        nodeSource: nodeSource,
-        edges: edges,
-        dataInput: dataOutput,
-      });
-
-      if (dataUpdated.length > 0) {
-        updateDataOutput(dataUpdated);
-      }
-    }
-  };
+function ComponentNodeSelect(props: NodeTypeHoC<string>) {
+  const { node, updateDataOutput, setNodeValue } = props;
+  const { data } = node;
   const onChange = (value: string) => {
-    setNodeUpdate(value);
-    updateDataOutPut();
+    setNodeValue(value);
+    updateDataOutput();
   };
   return (
     <div className="rounded text-base text-gray-200 bg-[#363533] p-2 px-6">
@@ -91,4 +60,9 @@ export default function NodeSelect(props: NodeProps) {
       </Handle>
     </div>
   );
+}
+
+export default function NodeSelect(props: NodeProps) {
+  const Comp = updateNodeHOC(ComponentNodeSelect);
+  return <Comp {...props} />;
 }

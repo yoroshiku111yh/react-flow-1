@@ -1,44 +1,13 @@
-import { useContext } from "react";
-import { Handle, NodeProps, Position, useReactFlow } from "reactflow";
-import { UseContext } from "../../App";
-import getDataUpdatedNode from "../../function/getDataUpdatedNode";
+import { Handle, NodeProps, Position } from "reactflow";
+import updateNodeHOC from "../../hocs/updateNodeHoc.tsx";
+import { NodeTypeHoC } from "../../types/node.type.tsx";
 
-export default function NodeToggle(props: NodeProps) {
-  const { dataOutput, updateDataOutput } = useContext(UseContext);
-  const { data, id } = props;
-  const { setNodes, getEdges, getNode } = useReactFlow();
-  const updateDataOutPut = () => {
-    const edges = getEdges();
-    const nodeSource = getNode(id);
-    if (nodeSource) {
-      const dataUpdated = getDataUpdatedNode({
-        id: id,
-        nodeSource: nodeSource,
-        edges: edges,
-        dataInput: dataOutput,
-      });
-
-      if (dataUpdated.length > 0) {
-        updateDataOutput(dataUpdated);
-      }
-    }
-  };
-  const setNodesValue = (value: boolean) => {
-    setNodes((nds) =>
-      nds.map((nd) => {
-        if (nd.id === id) {
-          nd.data = {
-            ...nd.data,
-            value: value,
-          };
-        }
-        return nd;
-      })
-    );
-  };
-  const onToggle = (isToggle: boolean) => {
-    setNodesValue(isToggle);
-    updateDataOutPut();
+function ComponentNodeToggle(props: NodeTypeHoC<boolean>) {
+  const { node, updateDataOutput, setNodeValue } = props;
+  const { data } = node;
+  const onToggle = (value: boolean) => {
+    setNodeValue(value);
+    updateDataOutput();
   };
   return (
     <div className="rounded text-base text-gray-200 bg-[#363533] p-2 px-6">
@@ -84,4 +53,9 @@ export default function NodeToggle(props: NodeProps) {
       </Handle>
     </div>
   );
+}
+
+export default function NodeToggle(props: NodeProps) {
+  const Comp = updateNodeHOC(ComponentNodeToggle);
+  return <Comp {...props} />;
 }
